@@ -22,7 +22,7 @@
       rel="stylesheet"
     />
     <link
-      href="https://cdn.jsdelivr.net/npm/leaflet.polylinemeasure@3.0.0/Leaflet.PolylineMeasure.min.css"
+      href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css"
       rel="stylesheet"
     />
     <link
@@ -34,12 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet.zoomslider@0.7.1/src/L.Control.Zoomslider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar@0.2.4/src/L.Control.Sidebar.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet.polylinemeasure@3.0.0/Leaflet.PolylineMeasure.min.js"></script>
+    <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js"></script>
-
-    <script src="swedish_counties.js"></script>
-    <script src="countries.js"></script>
     <script src="superMarkets.js"></script>
 
     <style>
@@ -77,35 +74,40 @@
       var mymap;
       var lyrOSM;
       var ctlZoomslider;
-      var swedishlayer = L.geoJson(swedish_counties);
-      var ctlMpolyline;
-
-      // Task 4 - Raster layer - Image Overlay
-      var IkeaLayer = L.imageOverlay("img/ikea.png", [
-        [60.482731, 15.419809],
-        [60.480601, 15.422171],
-      ]);
 
       $(document).ready(function () {
         mymap = L.map("mapdiv", {
-          center: [60.30129385267935, 18.410410081739627],
+          center: [60.484296, 15.417776],
           zoom: 11,
         });
+
         lyrOSM = L.tileLayer(
           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         );
+
         mymap.addLayer(lyrOSM);
 
-        ctlZoomslider = L.control
-          .zoomslider({ position: "topright" })
-          .addTo(mymap);
+        ctlZoomslider = L.control.zoomslider({ position: "topright" }).addTo(mymap);
 
         var sidebar = L.control.sidebar("sidebar", { position: "left" });
         mymap.addControl(sidebar);
 
-        ctlMpolyline = L.control
-          .polylineMeasure({ position: "topleft", unit: "kilometres" })
-          .addTo(mymap);
+        let polylineMeasure = L.control.polylineMeasure({ position: "topleft", unit: "kilometres" });
+        polylineMeasure.addTo(mymap);
+
+        const line1coords = [
+            { lat: 60.484296, lng: 15.417776 },
+            { lat: 60.513259, lng: 15.386245 },
+            { lat: 60.497992, lng: 15.406083 },
+            { lat: 60.494956, lng: 15.434257 },
+            { lat: 60.482664, lng: 15.4482367 }
+        ];
+        const line2coords = [
+            { lat: 19.880391767822505, lng: -159.67529296875003 },
+            { lat: 17.90556881196468, lng: -156.39038085937503 }
+        ];
+
+        polylineMeasure.seed([line1coords, line2coords])
 
         // Task 3 - Supermarkets
 
@@ -204,9 +206,11 @@
           },
         });
 
-        // Task 1 - Create a red polygon
+        document.getElementById("btnTask3").addEventListener("click", function() {
+          mymap.setView([60.30129385267935, 18.410410081739627], 12);
+        });
 
-        // Popup and marker
+        // Task 1 - Create a red polygon
         var blackIcon = L.icon({
           iconUrl:
             "https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/svg/map-marker.svg",
@@ -215,7 +219,7 @@
           popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
         });
 
-        popf = L.marker([60.60678124412115, 15.62869672216047], {
+        telia = L.marker([60.60678124412115, 15.62869672216047], {
           icon: blackIcon,
         })
           .addTo(mymap)
@@ -238,7 +242,6 @@
 
         var polygon = L.polygon(falan_polygon, { color: "red" }).addTo(mymap);
 
-        // Create a red line between work and museum
         var falan_line = [
           [60.60678124412115, 15.62869672216047],
           [60.60592996829374, 15.627476660943813],
@@ -252,9 +255,113 @@
         });
 
         // Task 2 - Sidebar
+        mellsta = L.marker([60.513259, 15.386245], {
+          icon: blackIcon,
+        })
+          .addTo(mymap)
+          .on("click", function () {
+            sidebar.setContent(
+              `<h3>Mellsta</h3>
+              <p style='font-size: 16px;'>Här finns camping och löparspår.</p>
+              <p style='font-size: 14px;'>Kordinater: 60.513259, 15.386245</p>
+              <p style='font-size: 14px;'>Avstånd till övriga punkter:</p>
+              <p style='font-size: 12px;'>Kupolen: x km</p>
+              <p style='font-size: 12px;'>Sportfältet: x km</p>
+              <p style='font-size: 12px;'>Borlänge Energi Arena: x km</p>
+              <p style='font-size: 12px;'>Ica Maxi: x km</p>`
+            );
+            sidebar.show();
+          });
 
+          kupolen = L.marker([60.484296, 15.417776], {
+          icon: blackIcon,
+        })
+          .addTo(mymap)
+          .on("click", function () {
+            sidebar.setContent(
+              `<h3>Kupolen</h3>
+              <p style='font-size: 16px;'>Här finns camping och löparspår.</p>
+              <p style='font-size: 14px;'>Kordinater: 60.484296, 15.417776</p>
+              <p style='font-size: 14px;'>Avstånd till övriga punkter:</p>
+              <p style='font-size: 12px;'>Mellsta: x km</p>
+              <p style='font-size: 12px;'>Sportfältet: x km</p>
+              <p style='font-size: 12px;'>Borlänge Energi Arena: x km</p>
+              <p style='font-size: 12px;'>Ica Maxi: x km</p>`
+            );
+            sidebar.show();
+          });
+
+        sportfaltet = L.marker([60.497992,15.406083], {
+          icon: blackIcon,
+        })
+          .addTo(mymap)
+          .on("click", function () {
+            sidebar.setContent(
+              `<h3>Sportfältet</h3>
+              <p style='font-size: 16px;'>Här finns flera fotbollsplaner.</p>
+              <p style='font-size: 14px;'>Kordinater: 60.497992,15.406083</p>
+              <p style='font-size: 14px;'>Avstånd till övriga punkter:</p>
+              <p style='font-size: 12px;'>Kupolen: x km</p>
+              <p style='font-size: 12px;'>Mellsta: x km</p>
+              <p style='font-size: 12px;'>Borlänge Energi Arena: x km</p>
+              <p style='font-size: 12px;'>Ica Maxi: x km</p>`
+            );
+            sidebar.show();
+          });
+
+        borlangeEnergiArena = L.marker([60.494956,15.434257], {
+          icon: blackIcon,
+        })
+          .addTo(mymap)
+          .on("click", function () {
+            sidebar.setContent(
+              `<h3>Borlänge Energi Arena</h3>
+              <p style='font-size: 16px;'>Borlänges "fotbollsarena". Den kallas även för Domnarsvallen.</p>
+              <p style='font-size: 14px;'>Kordinater: 60.494956,15.434257</p>
+              <p style='font-size: 14px;'>Avstånd till övriga punkter:</p>
+              <p style='font-size: 12px;'>Kupolen: x km</p>
+              <p style='font-size: 12px;'>Mellsta: x km</p>
+              <p style='font-size: 12px;'>Sportfältet: x km</p>
+              <p style='font-size: 12px;'>Ica Maxi: x km</p>`
+            );
+            sidebar.show();
+          });
+
+        icaMaxi = L.marker([60.482664,15.4482367], {
+          icon: blackIcon,
+        })
+          .addTo(mymap)
+          .on("click", function () {
+            sidebar.setContent(
+              `<h3>Ica Maxi Borlänge</h3>
+              <p style='font-size: 16px;'>Stor matbutik.</p>
+              <p style='font-size: 14px;'>Kordinater: 60.482664,15.4482367</p>
+              <p style='font-size: 14px;'>Avstånd till övriga punkter:</p>
+              <p style='font-size: 12px;'>Kupolen: x km</p>
+              <p style='font-size: 12px;'>Mellsta: x km</p>
+              <p style='font-size: 12px;'>Sportfältet: x km</p>
+              <p style='font-size: 12px;'>Borlänge Energi Arena: x km</p>`
+            );
+            sidebar.show();
+          });
+
+          $("#btnTask2").click(function () {
+          mymap.setView([60.484296, 15.417776], 12);
+          removeIkea();
+
+          sidebar.setContent(
+              `<h3>Landmärken i Borlänge</h3>
+              <p style='font-size: 12px;'>Klicka på en punkt för mer information.</p>`
+            );
+            sidebar.show();
+        });
 
         // Task 4 - Raster layer - Image Overlay
+        var IkeaLayer = L.imageOverlay("img/ikea.png", [
+          [60.482731, 15.419809],
+          [60.480601, 15.422171],
+        ]);
+
         function removeIkea() {
           if (mymap.hasLayer(IkeaLayer)) {
             mymap.removeLayer(IkeaLayer);

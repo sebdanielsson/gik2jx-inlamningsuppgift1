@@ -1,23 +1,14 @@
-var mymap;
-var lyrOSM;
-var ctlZoomslider;
-var sidebar;
-var polylineMeasure;
+var mymap = L.map('map').setView([60.484296, 15.417776], 11);
 
-mymap = L.map('mapdiv', {
-  center: [60.484296, 15.417776],
-  zoom: 11,
-});
-
-lyrOSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+var lyrOSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 mymap.addLayer(lyrOSM);
 
-ctlZoomslider = L.control.zoomslider({position: 'topright'}).addTo(mymap);
+var ctlZoomslider = L.control.zoomslider({position: 'topright'}).addTo(mymap);
 
-sidebar = L.control.sidebar('sidebar', {position: 'left'});
+var sidebar = L.control.sidebar('sidebar', {position: 'left'});
 mymap.addControl(sidebar);
 
-polylineMeasure = L.control.polylineMeasure({
+var polylineMeasure = L.control.polylineMeasure({
   position: 'topleft',
   unit: 'kilometres',
 });

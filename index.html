@@ -74,6 +74,8 @@
       var mymap;
       var lyrOSM;
       var ctlZoomslider;
+      var sidebar;
+      var polylineMeasure;
 
       $(document).ready(function () {
         mymap = L.map("mapdiv", {
@@ -84,15 +86,14 @@
         lyrOSM = L.tileLayer(
           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         );
-
         mymap.addLayer(lyrOSM);
 
         ctlZoomslider = L.control.zoomslider({ position: "topright" }).addTo(mymap);
 
-        var sidebar = L.control.sidebar("sidebar", { position: "left" });
+        sidebar = L.control.sidebar("sidebar", { position: "left" });
         mymap.addControl(sidebar);
 
-        let polylineMeasure = L.control.polylineMeasure({ position: "topleft", unit: "kilometres" });
+        polylineMeasure = L.control.polylineMeasure({ position: "topleft", unit: "kilometres" });
         polylineMeasure.addTo(mymap);
 
         const line1coords = [

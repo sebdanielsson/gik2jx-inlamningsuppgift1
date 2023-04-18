@@ -69,7 +69,6 @@
       <button id="btnTask2" class="btn btn-primary">Task 2</button>
       <button id="btnTask3" class="btn btn-primary">Task 3</button>
       <button id="btnTask4" class="btn btn-primary">Task 4</button>
-      <button id="l1">layer1</button>
     </div>
 
     <div id="sidebar"><h1>leaflet-sidebar</h1></div>
@@ -77,13 +76,15 @@
     <script>
       var mymap;
       var lyrOSM;
-      var mrkCurrentLocation;
       var ctlZoomslider;
       var swedishlayer = L.geoJson(swedish_counties);
-      var countrieslayer;
-      var ctlSlidebar;
       var ctlMpolyline;
-      var RasterL;
+
+      // Task 4 - Raster layer - Image Overlay
+      var IkeaLayer = L.imageOverlay("img/ikea.png", [
+        [60.482731, 15.419809],
+        [60.480601, 15.422171],
+      ]);
 
       $(document).ready(function () {
         mymap = L.map("mapdiv", {
@@ -219,7 +220,7 @@
         })
           .addTo(mymap)
           .bindPopup(
-            "<h3>Telia Shop Falun</h3><img src='img/telia.jpeg'width='150px'><p style='font-size: 12px;'>I work here once a week.</p>"
+            "<h3>Telia Shop Falun</h3><img src='img/telia.jpeg'width='150px'><p style='font-size: 12px;'>I work here once a week. It's close to the museum (se line). The polyfill is the building of Falan Galleria.</p>"
           );
 
         var falan_polygon = [
@@ -247,33 +248,24 @@
 
         $("#btnTask1").click(function () {
           mymap.setView([60.605866810126194, 15.628008842468262], 17);
+          removeIkea();
         });
 
         // Task 2 - Sidebar
 
-        // Swedish layer
-        document.getElementById("l1").addEventListener("click", sweden);
 
-        function sweden() {
-          if (mymap.hasLayer(swedishlayer)) {
-            mymap.removeLayer(swedishlayer);
-
-            sidebar.hide();
-          } else {
-            swedishlayer.addTo(mymap);
-
-            sidebar.show();
+        // Task 4 - Raster layer - Image Overlay
+        function removeIkea() {
+          if (mymap.hasLayer(IkeaLayer)) {
+            mymap.removeLayer(IkeaLayer);
           }
         }
 
-        // Task 4 - Raster layer - Image Overlay
-        RasterL = L.imageOverlay("img/ikea.png", [
-          [60.482731, 15.419809],
-          [60.480601, 15.422171],
-        ]).addTo(mymap);
-
-        $("#btnTask4").click(function () {
-          mymap.setView([60.48147404758184, 15.421338955848238], 17);
+        document.getElementById("btnTask4").addEventListener("click", function() {
+          if (!mymap.hasLayer(IkeaLayer)) {
+            IkeaLayer.addTo(mymap);
+            mymap.setView([60.48147404758184, 15.421338955848238], 17);
+          }
         });
       });
     </script>

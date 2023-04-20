@@ -3850,7 +3850,8 @@ var superMarkets = {
         operator: null,
         brand_wi_1: null,
         addr_count: null,
-        website: 'https://www.coop.se/butiker-varor--erbjudanden/butiker-import/stora-coop/stora-coop-uppsala-bolanderna/',
+        website:
+          'https://www.coop.se/butiker-varor--erbjudanden/butiker-import/stora-coop/stora-coop-uppsala-bolanderna/',
         wheelchair: null,
         phone: '+46 10 7412820',
         check_date: null,

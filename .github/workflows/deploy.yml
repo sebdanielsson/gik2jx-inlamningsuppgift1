@@ -19,7 +19,7 @@ jobs:
           cp index.html temp/
           cp -r src temp/
 
-      - name: Deploy to gh-pages branch
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

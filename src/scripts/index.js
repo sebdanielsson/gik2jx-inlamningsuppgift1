@@ -26,7 +26,7 @@ L.marker([60.60678124412115, 15.62869672216047], {
 })
   .addTo(mymap)
   .bindPopup(
-    "<h3>Telia Shop Falun</h3><img src='../img/telia.jpeg'width='150px'><p style='font-size: 12px;'>I work here once a week. It's close to the museum (se line). The polyfill is the building of Falan Galleria.</p>",
+    "<h3>Telia Shop Falun</h3><img src='img/telia.jpeg'width='150px'><p style='font-size: 12px;'>I work here once a week. It's close to the museum (se line). The polyfill is the building of Falan Galleria.</p>",
   );
 
 var falan_polygon = [
@@ -208,7 +208,7 @@ document.getElementById('btnTask3').addEventListener('click', function () {
 });
 
 // Task 4 - Raster layer - Image Overlay
-var IkeaLayer = L.imageOverlay('../img/ikea.png', [
+var IkeaLayer = L.imageOverlay('img/ikea.png', [
   [60.482731, 15.419809],
   [60.480601, 15.422171],
 ]);

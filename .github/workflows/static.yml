@@ -31,11 +31,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Copy files to a temporary directory
-        run: |
-          mkdir _site
-          cp index.html _site/
-          cp -r src _site/
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
